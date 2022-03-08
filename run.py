@@ -1,5 +1,6 @@
 # imports
 import os
+import json
 from flask import Flask, render_template
 
 # creating an instance of the Flask class with app module name as 1st arg
@@ -14,7 +15,11 @@ def index():
 # creating the 'about' view (also linked in the html files)
 @app.route("/about")
 def about():
-    return render_template("about.html", page_title="About")
+    data = []
+    # opening the json file with the company data
+    with open("data/company.json", "r") as json_data:
+        data = json.load(json_data)
+    return render_template("about.html", page_title="About", company=data)
 
 # contact view
 @app.route("/contact")
