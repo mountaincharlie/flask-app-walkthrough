@@ -1,0 +1,6 @@
+/* -------------------- IMAGES */
+
+/* all img children of col-md-5 */
+.col-md-5 img{
+    width:100%;
+}
