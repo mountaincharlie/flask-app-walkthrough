@@ -1,10 +1,14 @@
 # imports
 import os
 import json
-from flask import Flask, render_template
+# 'render_template' is to render a template, 'request' is to allow different reqest methods such as POST, 'flash' is for displaying non-permenant messages to user
+from flask import Flask, render_template, request, flash
+if os.path.exists("env.py"):
+    import env
 
 # creating an instance of the Flask class with app module name as 1st arg
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY")
 
 # decorator ensures that nav to the root dir triggers the function after
 @app.route("/")
@@ -35,9 +39,15 @@ def about_member(member_name):
     return render_template("member.html", member=member)
 
 
-# contact view
-@app.route("/contact")
+# contact view (with argument for route to accept POST method)
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
+    if request.method == "POST":
+        flash("Thanks {}, we have recieved your message!".format(
+            request.form.get("name")))
+        # [] notaion throws exceptions if no key
+        # print(request.form['name'])
+        # print(request.form['email'])  
     return render_template("contact.html", page_title="Contact")
 
 
